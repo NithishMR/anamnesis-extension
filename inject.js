@@ -28,7 +28,99 @@
       return null;
     }
   }
+  function showSuccessPanel(data) {
+    const existing = document.getElementById("__anamnesis_panel__");
+    if (existing) existing.remove();
 
+    const panel = document.createElement("div");
+    panel.id = "__anamnesis_panel__";
+
+    panel.innerHTML = `
+    <div style="
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #111827;
+      color: white;
+      padding: 18px;
+      border-radius: 14px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+      z-index: 999999;
+      width: 320px;
+      font-family: system-ui, sans-serif;
+      animation: slideIn 0.25s ease-out;
+    ">
+      <h3 style="margin:0 0 10px 0; color:#22c55e;">
+        Accepted ✅
+      </h3>
+
+      <p style="margin:4px 0;">Runtime: ${data.runtime}</p>
+      <p style="margin:4px 0;">Memory: ${data.memory}</p>
+      <p style="margin:4px 0;">Language: ${data.language}</p>
+
+      <hr style="border: 0.5px solid #374151; margin:12px 0;" />
+
+      <p style="margin:6px 0;">Send to Anamnesis?</p>
+
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button id="__anamnesis_yes__" style="
+          flex:1;
+          padding:8px;
+          background:#22c55e;
+          border:none;
+          border-radius:8px;
+          cursor:pointer;
+          font-weight:600;
+        ">
+          Yes
+        </button>
+
+        <button id="__anamnesis_no__" style="
+          flex:1;
+          padding:8px;
+          background:#374151;
+          color:white;
+          border:none;
+          border-radius:8px;
+          cursor:pointer;
+        ">
+          No
+        </button>
+      </div>
+    </div>
+
+    <style>
+      @keyframes slideIn {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+      }
+    </style>
+  `;
+
+    document.body.appendChild(panel);
+
+    // YES button
+    document
+      .getElementById("__anamnesis_yes__")
+      .addEventListener("click", () => {
+        window.postMessage(
+          {
+            type: "LEETCODE_SUBMISSION_SUCCESS",
+            payload: data,
+          },
+          "*",
+        );
+
+        panel.remove();
+      });
+
+    // NO button
+    document
+      .getElementById("__anamnesis_no__")
+      .addEventListener("click", () => {
+        panel.remove();
+      });
+  }
   // ===============================
   // 🚀 Intercept Fetch
   // ===============================
@@ -66,7 +158,7 @@
           };
 
           console.log("FINAL DATA:", usefulData);
-
+          showSuccessPanel(usefulData);
           window.postMessage(
             {
               type: "LEETCODE_SUBMISSION_SUCCESS",
