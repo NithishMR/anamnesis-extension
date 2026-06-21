@@ -4,27 +4,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Anamnesis Extension</title>
+
     <style>
         body {
-            font-family: Arial;
-            width: 300px;
-            padding: 10px;
+            font-family: Arial, sans-serif;
+            width: 350px;
+            padding: 12px;
         }
 
         .card {
             border: 1px solid #ddd;
             padding: 10px;
             border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 8px;
+        }
+
+        button {
+            margin-top: 8px;
+            width: 100%;
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .success {
+            color: green;
+            font-size: 12px;
+            margin-top: 5px;
         }
     </style>
 </head>
 
 <body>
+
+    <h2>Anamnesis Extension</h2>
+
+    <div class="section">
+        <label for="tokenInput">Extension Token</label>
+
+        <input id="tokenInput" type="text" placeholder="Paste token from Anamnesis Settings" />
+
+        <button id="saveTokenBtn">
+            Save Token
+        </button>
+
+        <div id="tokenStatus" class="success"></div>
+    </div>
+
+    <hr />
+
     <h3>Latest Submission</h3>
-    <div id="content">Loading...</div>
+
+    <div id="content">
+        Loading...
+    </div>
 
     <script src="popup.js"></script>
+
 </body>
 
 </html>
