@@ -2,8 +2,19 @@
   "manifest_version": 3,
   "name": "LeetCode Tracker",
   "version": "1.0",
+
   "permissions": ["storage"],
-  "host_permissions": ["https://leetcode.com/*"],
+
+  "host_permissions": [
+    "https://leetcode.com/*",
+    "http://localhost:3000/*",
+    "https://anamanesis-beta.vercel.app/*"
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
   "content_scripts": [
     {
       "matches": ["https://leetcode.com/problems/*"],
@@ -11,12 +22,14 @@
       "run_at": "document_start"
     }
   ],
+
   "web_accessible_resources": [
     {
       "resources": ["inject.js"],
       "matches": ["https://leetcode.com/*"]
     }
   ],
+
   "action": {
     "default_popup": "popup.html"
   }
