@@ -156,6 +156,7 @@
 
           const usefulData = {
             code: getCodeFromEditor(),
+            problemUrl: window.location.href,
             submission_id: data.submission_id,
             question_id: data.question_id,
             language: data.pretty_lang,
