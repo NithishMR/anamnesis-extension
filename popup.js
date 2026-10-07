@@ -2,39 +2,48 @@ function render(data) {
   const container = document.getElementById("content");
 
   if (!data) {
-    container.innerHTML = "No Accepted submission yet.";
+    container.innerHTML =
+      '<div class="empty-state">No accepted submissions yet.</div>';
     return;
   }
 
   container.innerHTML = `
-    <div class="card">
-      <p><strong>Submission ID:</strong> ${data.submission_id}</p>
+    <div class="submission-card">
+      <div class="submission-header">
+        <div class="submission-title">
+          <p class="eyebrow">ACCEPTED SUBMISSION</p>
+          <p class="submission-id">ID ${data.submission_id}</p>
+        </div>
+        <span class="difficulty-badge">${data.difficulty ?? "Unknown"}</span>
+      </div>
 
-      <p><strong>Language:</strong> ${data.language}</p>
+      <div class="metrics">
+        <div class="metric">
+          <span class="metric-label">Language</span>
+          <span class="metric-value">${data.language ?? "N/A"}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Runtime</span>
+          <span class="metric-value">${data.runtime ?? "N/A"}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Memory</span>
+          <span class="metric-value">${data.memory ?? "N/A"}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Runtime percentile</span>
+          <span class="metric-value">${data.runtime_percentile?.toFixed?.(2) ?? "N/A"}${data.runtime_percentile == null ? "" : "%"}</span>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Memory percentile</span>
+          <span class="metric-value">${data.memory_percentile?.toFixed?.(2) ?? "N/A"}${data.memory_percentile == null ? "" : "%"}</span>
+        </div>
+      </div>
 
-      <p><strong>Runtime:</strong> ${data.runtime}</p>
-
-      <p><strong>Memory:</strong> ${data.memory}</p>
-
-      <p><strong>Runtime %:</strong>
-        ${data.runtime_percentile?.toFixed?.(2) ?? "N/A"}
-      </p>
-
-      <p><strong>Memory %:</strong>
-        ${data.memory_percentile?.toFixed?.(2) ?? "N/A"}
-      </p>
-
-      <hr />
-
-      <strong>Code:</strong>
-
-      <pre style="
-        white-space: pre-wrap;
-        max-height: 200px;
-        overflow: auto;
-      ">
-${data.code}
-      </pre>
+      <details class="code-details">
+        <summary>View submitted code</summary>
+        <pre>${data.code ?? "No code available."}</pre>
+      </details>
     </div>
   `;
 }

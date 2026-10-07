@@ -32,6 +32,30 @@
     }
   }
 
+  async function getProblemDifficulty() {
+    const titleSlug = window.location.pathname.split("/").filter(Boolean)[1];
+
+    if (!titleSlug) return null;
+
+    try {
+      const response = await originalFetch("/graphql/", {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          query:
+            "query questionData($titleSlug: String!) { question(titleSlug: $titleSlug) { difficulty } }",
+          variables: { titleSlug },
+        }),
+      });
+      const result = await response.json();
+      return result.data?.question?.difficulty ?? null;
+    } catch (err) {
+      console.error("Could not retrieve problem difficulty:", err);
+      return null;
+    }
+  }
+
   // ===============================
   //  Success Panel
   // ===============================
@@ -65,6 +89,7 @@
         <p>Runtime: ${data.runtime}</p>
         <p>Memory: ${data.memory}</p>
         <p>Language: ${data.language}</p>
+        <p>Difficulty: ${data.difficulty ?? "Unknown"}</p>
 
         <hr style="margin:12px 0;border:.5px solid #374151"/>
 
@@ -153,10 +178,12 @@
           !alreadyProcessed.has(data.submission_id)
         ) {
           alreadyProcessed.add(data.submission_id);
+          const difficulty = await getProblemDifficulty();
 
           const usefulData = {
             code: getCodeFromEditor(),
             problemUrl: window.location.href,
+            difficulty,
             submission_id: data.submission_id,
             question_id: data.question_id,
             language: data.pretty_lang,

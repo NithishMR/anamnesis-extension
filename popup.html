@@ -7,73 +7,305 @@
     <title>Anamnesis Extension</title>
 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            width: 350px;
-            padding: 12px;
+        :root {
+            color-scheme: light;
+            font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+            color: #172b36;
+            background: #f4f7f6;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            --ink-muted: #687982;
+            --line: #dce5e3;
+            --surface: #ffffff;
+            --accent: #146b5b;
+            --accent-hover: #105548;
         }
 
-        .card {
-            border: 1px solid #ddd;
-            padding: 10px;
-            border-radius: 8px;
-            margin-top: 10px;
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 376px;
+            margin: 0;
+            padding: 20px;
+            background:
+                linear-gradient(135deg, rgba(20, 107, 91, .035), transparent 45%),
+                #f4f7f6;
+        }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            flex: 0 0 auto;
+            place-items: center;
+            border-radius: 10px;
+            background: #146b5b;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .brand-copy h1 {
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.25;
+            font-weight: 650;
+        }
+
+        .brand-copy p,
+        .section-heading p {
+            margin: 3px 0 0;
+            color: var(--ink-muted);
+            font-size: 11px;
         }
 
         .section {
-            margin-bottom: 16px;
+            padding: 18px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 650;
+        }
+
+        .section-heading p {
+            margin: 0;
+            font-size: 10px;
+            font-weight: 600;
         }
 
         label {
             display: block;
             margin-bottom: 6px;
-            font-weight: bold;
+            color: #3b5059;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .token-row {
+            display: flex;
+            gap: 8px;
         }
 
         input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 8px;
+            min-width: 0;
+            height: 36px;
+            flex: 1;
+            padding: 0 10px;
+            border: 1px solid #cbd8d5;
+            border-radius: 6px;
+            outline: none;
+            background: var(--surface);
+            color: #172b36;
+            font: inherit;
+            font-size: 11px;
+        }
+
+        input::placeholder {
+            color: #92a0a4;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(20, 107, 91, .12);
         }
 
         button {
-            margin-top: 8px;
-            width: 100%;
-            padding: 8px;
+            min-width: 78px;
+            height: 36px;
+            padding: 0 12px;
+            border: 0;
+            border-radius: 6px;
+            background: var(--accent);
+            color: white;
             cursor: pointer;
+            font: inherit;
+            font-size: 11px;
+            font-weight: 600;
+            transition: background-color 120ms ease;
+        }
+
+        button:hover {
+            background: var(--accent-hover);
+        }
+
+        button:focus-visible {
+            outline: 3px solid rgba(20, 107, 91, .25);
+            outline-offset: 2px;
         }
 
         .success {
-            color: green;
+            min-height: 14px;
+            margin-top: 7px;
+            color: var(--accent);
+            font-size: 11px;
+        }
+
+        .latest-section {
+            padding-top: 18px;
+        }
+
+        .empty-state {
+            padding: 17px 14px;
+            border: 1px dashed #cbd8d5;
+            border-radius: 7px;
+            background: rgba(255, 255, 255, .65);
+            color: var(--ink-muted);
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .submission-card {
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: var(--surface);
+        }
+
+        .submission-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 12px;
+            border-bottom: 1px solid #e8eeec;
+        }
+
+        .submission-title {
+            min-width: 0;
+        }
+
+        .eyebrow {
+            margin: 0 0 4px;
+            color: var(--ink-muted);
+            font-size: 9px;
+            font-weight: 700;
+        }
+
+        .submission-id {
+            overflow-wrap: anywhere;
+            margin: 0;
+            color: #30454e;
+            font-size: 10px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .difficulty-badge {
+            flex: 0 0 auto;
+            padding: 4px 7px;
+            border-radius: 4px;
+            background: #e8f2ef;
+            color: #146b5b;
+            font-size: 10px;
+            font-weight: 650;
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1px;
+            background: #e8eeec;
+            border-bottom: 1px solid #e8eeec;
+        }
+
+        .metric {
+            min-width: 0;
+            padding: 10px 12px;
+            background: var(--surface);
+        }
+
+        .metric-label {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--ink-muted);
+            font-size: 9px;
+        }
+
+        .metric-value {
+            display: block;
+            overflow: hidden;
+            color: #203740;
             font-size: 12px;
-            margin-top: 5px;
+            font-weight: 650;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .code-details summary {
+            padding: 10px 12px;
+            color: #3b5059;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .code-details pre {
+            max-height: 180px;
+            overflow: auto;
+            margin: 0;
+            padding: 10px 12px;
+            border-top: 1px solid #e8eeec;
+            background: #f8faf9;
+            color: #30454e;
+            font: 10px/1.5 Consolas, "Courier New", monospace;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
         }
     </style>
 </head>
 
 <body>
 
-    <h2>Anamnesis Extension</h2>
+    <header class="topbar">
+        <div class="brand-mark" aria-hidden="true">A</div>
+        <div class="brand-copy">
+            <h1>Anamnesis</h1>
+            <p>LeetCode submission tracker</p>
+        </div>
+    </header>
 
     <div class="section">
-        <label for="tokenInput">Extension Token</label>
-
-        <input id="tokenInput" type="text" placeholder="Paste token from Anamnesis Settings" />
-
-        <button id="saveTokenBtn">
-            Save Token
-        </button>
-
-        <div id="tokenStatus" class="success"></div>
+        <div class="section-heading">
+            <h2>Connection</h2>
+            <p>ACCOUNT</p>
+        </div>
+        <label for="tokenInput">Extension token</label>
+        <div class="token-row">
+            <input id="tokenInput" type="password" placeholder="Paste token from settings" autocomplete="off" />
+            <button id="saveTokenBtn" type="button">Save</button>
+        </div>
+        <div id="tokenStatus" class="success" role="status" aria-live="polite"></div>
     </div>
 
-    <hr />
+    <section class="latest-section" aria-labelledby="latestHeading">
+        <div class="section-heading">
+            <h2 id="latestHeading">Latest submission</h2>
+            <p>RECENT ACTIVITY</p>
+        </div>
 
-    <h3>Latest Submission</h3>
-
-    <div id="content">
-        Loading...
-    </div>
+        <div id="content" aria-live="polite">
+            <div class="empty-state">Loading submission...</div>
+        </div>
+    </section>
 
     <script src="popup.js"></script>
 
